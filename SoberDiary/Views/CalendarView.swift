@@ -1,0 +1,178 @@
+import SwiftUI
+import SwiftData
+
+struct CalendarView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query(sort: \DrinkRecord.date) private var allRecords: [DrinkRecord]
+    @StateObject private var viewModel = CalendarViewModel()
+
+    @State private var selectedDate: Date? = nil
+    @State private var showDetail = false
+
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: 6), count: 7)
+    private let weekdaySymbols = ["일", "월", "화", "수", "목", "금", "토"]
+
+    var body: some View {
+        VStack(spacing: 0) {
+            streakHeader
+            monthNavigationHeader
+            weekdayHeader
+            calendarGrid
+            summaryBanner
+            legendView
+        }
+        .padding(.horizontal, 16)
+        .background(Color("appBackground"))
+        .onAppear { viewModel.loadRecords(context: modelContext) }
+        .onChange(of: allRecords) { _, _ in
+            viewModel.loadRecords(context: modelContext)
+        }
+        .sheet(isPresented: $showDetail, onDismiss: {
+            viewModel.loadRecords(context: modelContext)
+        }) {
+            if let date = selectedDate {
+                DayDetailView(date: date)
+            }
+        }
+    }
+
+    private var streakHeader: some View {
+        Group {
+            if viewModel.currentSoberStreak > 0 {
+                HStack {
+                    Text("현재 연속 금주 \(viewModel.currentSoberStreak)일 🔥")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                }
+                .padding(.top, 4)
+                .padding(.bottom, 8)
+            }
+        }
+    }
+
+    private var monthNavigationHeader: some View {
+        HStack {
+            Button {
+                withAnimation(.easeInOut) { viewModel.previousMonth() }
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 16, weight: .semibold))
+                    .frame(width: 36, height: 36)
+            }
+            Spacer()
+            Text(viewModel.monthTitle)
+                .font(.system(size: 20, weight: .semibold))
+                .onTapGesture {
+                    withAnimation(.easeInOut) { viewModel.goToToday() }
+                }
+            Spacer()
+            Button {
+                withAnimation(.easeInOut) { viewModel.nextMonth() }
+            } label: {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 16, weight: .semibold))
+                    .frame(width: 36, height: 36)
+            }
+        }
+        .padding(.vertical, 8)
+    }
+
+    private var weekdayHeader: some View {
+        HStack(spacing: 6) {
+            ForEach(Array(weekdaySymbols.enumerated()), id: \.offset) { index, symbol in
+                Text(symbol)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(weekdayColor(for: index))
+                    .frame(maxWidth: .infinity)
+            }
+        }
+        .padding(.bottom, 6)
+    }
+
+    private var calendarGrid: some View {
+        LazyVGrid(columns: columns, spacing: 6) {
+            ForEach(Array(viewModel.daysInMonth.enumerated()), id: \.offset) { _, day in
+                if let day {
+                    DayCell(
+                        date: day,
+                        record: viewModel.record(for: day),
+                        isToday: viewModel.isToday(day),
+                        isFuture: viewModel.isFuture(day)
+                    )
+                    .onTapGesture {
+                        guard !viewModel.isFuture(day) else { return }
+                        selectedDate = day
+                        showDetail = true
+                    }
+                } else {
+                    Color.clear.aspectRatio(1, contentMode: .fit)
+                }
+            }
+        }
+    }
+
+    private var summaryBanner: some View {
+        let summary = viewModel.monthSummary
+        let total = summary.sober + summary.drink
+        return Group {
+            if total > 0 {
+                HStack(spacing: 16) {
+                    Label("금주 \(summary.sober)일", systemImage: "checkmark.seal.fill")
+                        .foregroundStyle(Color("soberBlue"))
+                    Label("음주 \(summary.drink)일", systemImage: "wineglass.fill")
+                        .foregroundStyle(Color("drinkPink"))
+                    Spacer()
+                    if summary.drink == 0 && summary.sober > 0 {
+                        Text("🎉")
+                    }
+                }
+                .font(.system(size: 13, weight: .medium))
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color(.secondarySystemBackground))
+                )
+                .padding(.top, 16)
+            }
+        }
+    }
+
+    private var legendView: some View {
+        HStack(spacing: 12) {
+            Spacer()
+            legendItem(color: Color("drinkPink"), label: "음주")
+            legendItem(color: Color("soberBlue"), label: "금주")
+        }
+        .font(.system(size: 11))
+        .foregroundStyle(.secondary)
+        .padding(.top, 8)
+        .padding(.bottom, 12)
+    }
+
+    private func legendItem(color: Color, label: String) -> some View {
+        HStack(spacing: 4) {
+            RoundedRectangle(cornerRadius: 3)
+                .fill(color)
+                .frame(width: 10, height: 10)
+            Text(label)
+        }
+    }
+
+    private func weekdayColor(for index: Int) -> Color {
+        switch index {
+        case 0: return .red.opacity(0.7)
+        case 6: return .blue.opacity(0.7)
+        default: return .secondary
+        }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        CalendarView()
+            .navigationTitle("금주일기")
+    }
+    .modelContainer(for: DrinkRecord.self, inMemory: true)
+}
