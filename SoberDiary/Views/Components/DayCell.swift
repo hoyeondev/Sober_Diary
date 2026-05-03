@@ -28,12 +28,19 @@ struct DayCell: View {
 
             if isToday {
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.primary, lineWidth: 2)
+                    .stroke(Color.orange, lineWidth: 2.5)
             }
 
-            Text(dayNumber)
-                .font(.system(size: 14, weight: isToday ? .bold : .medium))
-                .foregroundStyle(textColor)
+            VStack(spacing: 2) {
+                Text(dayNumber)
+                    .font(.system(size: 14, weight: isToday ? .bold : .medium))
+                    .foregroundStyle(textColor)
+                if isToday {
+                    Circle()
+                        .fill(Color.orange)
+                        .frame(width: 4, height: 4)
+                }
+            }
         }
         .aspectRatio(1, contentMode: .fit)
         .contentShape(Rectangle())
