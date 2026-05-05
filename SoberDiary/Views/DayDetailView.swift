@@ -14,7 +14,6 @@ struct DayDetailView: View {
     @State private var memo: String = ""
     @State private var showDeleteConfirm: Bool = false
     @State private var isLoaded: Bool = false
-    @FocusState private var memoFocused: Bool
 
     private var existingRecord: DrinkRecord? {
         let day = Calendar.current.startOfDay(for: date)
@@ -67,12 +66,7 @@ struct DayDetailView: View {
                         }
                     }
                 }
-                ToolbarItem(placement: .keyboard) {
-                    HStack {
-                        Spacer()
-                        Button("완료") { memoFocused = false }
-                    }
-                }
+
             }
             .onAppear(perform: loadIfNeeded)
         .onChange(of: allRecords) { _, _ in loadIfNeeded() }
@@ -170,11 +164,8 @@ struct DayDetailView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("메모")
                 .font(.system(size: 15, weight: .semibold))
-            TextEditor(text: $memo)
-                .focused($memoFocused)
+            MemoTextEditor(text: $memo)
                 .frame(minHeight: 120)
-                .padding(8)
-                .scrollContentBackground(.hidden)
                 .background(
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color(.secondarySystemBackground))
@@ -241,6 +232,43 @@ struct DayDetailView: View {
         modelContext.delete(record)
         try? modelContext.save()
         dismiss()
+    }
+}
+
+private struct MemoTextEditor: UIViewRepresentable {
+    @Binding var text: String
+
+    func makeCoordinator() -> Coordinator { Coordinator(self) }
+
+    func makeUIView(context: Context) -> UITextView {
+        let view = UITextView()
+        view.delegate = context.coordinator
+        view.returnKeyType = .done
+        view.font = .systemFont(ofSize: 16)
+        view.backgroundColor = .clear
+        view.textContainerInset = UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8)
+        return view
+    }
+
+    func updateUIView(_ uiView: UITextView, context: Context) {
+        if uiView.text != text { uiView.text = text }
+    }
+
+    class Coordinator: NSObject, UITextViewDelegate {
+        var parent: MemoTextEditor
+        init(_ parent: MemoTextEditor) { self.parent = parent }
+
+        func textViewDidChange(_ textView: UITextView) {
+            parent.text = textView.text
+        }
+
+        func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+            if text == "\n" {
+                textView.resignFirstResponder()
+                return false
+            }
+            return true
+        }
     }
 }
 
