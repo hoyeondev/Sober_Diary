@@ -5,7 +5,6 @@ struct DiaryListView: View {
     @Query(sort: \DrinkRecord.date, order: .reverse) private var records: [DrinkRecord]
 
     @State private var selectedDate: Date? = nil
-    @State private var showDetail = false
 
     private var groupedRecords: [(title: String, records: [DrinkRecord])] {
         let formatter = DateFormatter()
@@ -45,7 +44,6 @@ struct DiaryListView: View {
                                     .contentShape(Rectangle())
                                     .onTapGesture {
                                         selectedDate = record.date
-                                        showDetail = true
                                     }
                             }
                         }
@@ -54,10 +52,8 @@ struct DiaryListView: View {
                 .listStyle(.insetGrouped)
             }
         }
-        .sheet(isPresented: $showDetail) {
-            if let date = selectedDate {
-                DayDetailView(date: date)
-            }
+        .sheet(item: $selectedDate) { date in
+            DayDetailView(date: date)
         }
     }
 }

@@ -1,6 +1,10 @@
 import Foundation
 import SwiftData
 
+extension Date: @retroactive Identifiable {
+    public var id: TimeInterval { timeIntervalSince1970 }
+}
+
 @Model
 final class DrinkRecord {
     var date: Date

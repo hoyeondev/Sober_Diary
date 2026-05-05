@@ -7,7 +7,6 @@ struct CalendarView: View {
     @StateObject private var viewModel = CalendarViewModel()
 
     @State private var selectedDate: Date? = nil
-    @State private var showDetail = false
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 6), count: 7)
     private let weekdaySymbols = ["일", "월", "화", "수", "목", "금", "토"]
@@ -27,12 +26,10 @@ struct CalendarView: View {
         .onChange(of: allRecords) { _, _ in
             viewModel.loadRecords(context: modelContext)
         }
-        .sheet(isPresented: $showDetail, onDismiss: {
+        .sheet(item: $selectedDate, onDismiss: {
             viewModel.loadRecords(context: modelContext)
-        }) {
-            if let date = selectedDate {
-                DayDetailView(date: date)
-            }
+        }) { date in
+            DayDetailView(date: date)
         }
     }
 
@@ -103,7 +100,6 @@ struct CalendarView: View {
                     .onTapGesture {
                         guard !viewModel.isFuture(day) else { return }
                         selectedDate = day
-                        showDetail = true
                     }
                 } else {
                     Color.clear.aspectRatio(1, contentMode: .fit)
