@@ -13,6 +13,7 @@ struct DayDetailView: View {
     @State private var customType: String = ""
     @State private var memo: String = ""
     @State private var showDeleteConfirm: Bool = false
+    @State private var isLoaded: Bool = false
     @FocusState private var memoFocused: Bool
 
     private var existingRecord: DrinkRecord? {
@@ -74,6 +75,7 @@ struct DayDetailView: View {
                 }
             }
             .onAppear(perform: loadIfNeeded)
+        .onChange(of: allRecords) { _, _ in loadIfNeeded() }
             .confirmationDialog("이 날의 기록을 삭제할까요?",
                                 isPresented: $showDeleteConfirm,
                                 titleVisibility: .visible) {
@@ -208,10 +210,11 @@ struct DayDetailView: View {
     }
 
     private func loadIfNeeded() {
-        guard let record = existingRecord else { return }
+        guard !isLoaded, let record = existingRecord else { return }
         didDrink = record.didDrink
         selectedTypes = Set(record.drinkTypes)
         memo = record.memo
+        isLoaded = true
     }
 
     private func save() {
