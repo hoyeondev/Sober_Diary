@@ -6,6 +6,7 @@ struct DayDetailView: View {
 
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(AppSettings.self) private var settings
     @Query private var allRecords: [DrinkRecord]
 
     @State private var didDrink: Bool = false
@@ -94,12 +95,12 @@ struct DayDetailView: View {
             Toggle(isOn: $didDrink.animation(.easeInOut)) {
                 HStack {
                     Image(systemName: didDrink ? "wineglass.fill" : "leaf.fill")
-                        .foregroundStyle(didDrink ? Color("drinkPink") : Color("soberBlue"))
+                        .foregroundStyle(didDrink ? settings.drinkColor : settings.soberColor)
                     Text(didDrink ? "오늘 마셨어요" : "오늘 마시지 않았어요")
                         .font(.system(size: 16, weight: .medium))
                 }
             }
-            .tint(Color("drinkPink"))
+            .tint(settings.drinkColor)
             .padding(.horizontal, 14)
             .padding(.vertical, 12)
             .background(
@@ -139,7 +140,7 @@ struct DayDetailView: View {
                 } label: {
                     Image(systemName: "plus.circle.fill")
                         .font(.system(size: 24))
-                        .foregroundStyle(customType.trimmingCharacters(in: .whitespaces).isEmpty ? .secondary : Color("drinkPink"))
+                        .foregroundStyle(customType.trimmingCharacters(in: .whitespaces).isEmpty ? .secondary : settings.drinkColor)
                 }
                 .disabled(customType.trimmingCharacters(in: .whitespaces).isEmpty)
             }
@@ -181,7 +182,7 @@ struct DayDetailView: View {
                 .padding(.vertical, 14)
         }
         .buttonStyle(.borderedProminent)
-        .tint(didDrink ? Color("drinkPink") : Color("soberBlue"))
+        .tint(didDrink ? settings.drinkColor : settings.soberColor)
         .foregroundStyle(.white)
     }
 

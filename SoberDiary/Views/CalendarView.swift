@@ -3,6 +3,7 @@ import SwiftData
 
 struct CalendarView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(AppSettings.self) private var settings
     @Query(sort: \DrinkRecord.date) private var allRecords: [DrinkRecord]
     @StateObject private var viewModel = CalendarViewModel()
 
@@ -127,9 +128,9 @@ struct CalendarView: View {
             if total > 0 {
                 HStack(spacing: 16) {
                     Label("금주 \(summary.sober)일", systemImage: "checkmark.seal.fill")
-                        .foregroundStyle(Color("soberBlue"))
+                        .foregroundStyle(settings.soberColor)
                     Label("음주 \(summary.drink)일", systemImage: "wineglass.fill")
-                        .foregroundStyle(Color("drinkPink"))
+                        .foregroundStyle(settings.drinkColor)
                     Spacer()
                     if summary.drink == 0 && summary.sober > 0 {
                         Text("🎉")
@@ -150,8 +151,8 @@ struct CalendarView: View {
     private var legendView: some View {
         HStack(spacing: 12) {
             Spacer()
-            legendItem(color: Color("drinkPink"), label: "음주")
-            legendItem(color: Color("soberBlue"), label: "금주")
+            legendItem(color: settings.drinkColor, label: "음주")
+            legendItem(color: settings.soberColor, label: "금주")
         }
         .font(.system(size: 11))
         .foregroundStyle(.secondary)

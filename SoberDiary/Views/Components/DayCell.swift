@@ -6,13 +6,15 @@ struct DayCell: View {
     let isToday: Bool
     let isFuture: Bool
 
+    @Environment(AppSettings.self) private var settings
+
     private var dayNumber: String {
         String(Calendar.current.component(.day, from: date))
     }
 
     private var cellColor: Color {
         guard let record else { return Color("unrecorded") }
-        return record.didDrink ? Color("drinkPink") : Color("soberBlue")
+        return record.didDrink ? settings.drinkColor : settings.soberColor
     }
 
     private var textColor: Color {

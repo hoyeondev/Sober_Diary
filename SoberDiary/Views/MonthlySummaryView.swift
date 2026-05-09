@@ -54,6 +54,7 @@ struct MonthlySummaryView: View {
 
 private struct MonthSummaryCard: View {
     let data: MonthData
+    @Environment(AppSettings.self) private var settings
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -69,8 +70,8 @@ private struct MonthSummaryCard: View {
             }
 
             HStack(spacing: 20) {
-                statItem(label: "금주", value: data.sober, color: Color("soberBlue"))
-                statItem(label: "음주", value: data.drink, color: Color("drinkPink"))
+                statItem(label: "금주", value: data.sober, color: settings.soberColor)
+                statItem(label: "음주", value: data.drink, color: settings.drinkColor)
                 Spacer()
                 Text("총 \(data.total)일 기록")
                     .font(.system(size: 12))
@@ -80,10 +81,10 @@ private struct MonthSummaryCard: View {
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 4)
-                        .fill(Color("drinkPink").opacity(0.25))
+                        .fill(settings.drinkColor.opacity(0.25))
                         .frame(height: 8)
                     RoundedRectangle(cornerRadius: 4)
-                        .fill(Color("soberBlue"))
+                        .fill(settings.soberColor)
                         .frame(width: geo.size.width * data.soberRatio, height: 8)
                 }
             }

@@ -60,6 +60,7 @@ struct DiaryListView: View {
 
 private struct DiaryRowView: View {
     let record: DrinkRecord
+    @Environment(AppSettings.self) private var settings
 
     private var dateLabel: String {
         let formatter = DateFormatter()
@@ -77,10 +78,10 @@ private struct DiaryRowView: View {
                 Label(record.didDrink ? "음주" : "금주",
                       systemImage: record.didDrink ? "wineglass.fill" : "checkmark.seal.fill")
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(record.didDrink ? Color("drinkPink") : Color("soberBlue"))
+                    .foregroundStyle(record.didDrink ? settings.drinkColor : settings.soberColor)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
-                    .background(Capsule().fill(record.didDrink ? Color("drinkPink").opacity(0.15) : Color("soberBlue").opacity(0.15)))
+                    .background(Capsule().fill(record.didDrink ? settings.drinkColor.opacity(0.15) : settings.soberColor.opacity(0.15)))
             }
             if !record.drinkTypes.isEmpty {
                 Text(record.drinkTypes.joined(separator: " · "))

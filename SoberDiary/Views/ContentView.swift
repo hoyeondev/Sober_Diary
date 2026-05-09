@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(AppSettings.self) private var settings
+
     var body: some View {
         TabView {
             NavigationStack {
@@ -26,7 +28,18 @@ struct ContentView: View {
             .tabItem {
                 Label("월별 요약", systemImage: "chart.bar.fill")
             }
+
+            NavigationStack {
+                SettingsView()
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+            .tabItem {
+                Label("설정", systemImage: "gearshape.fill")
+            }
         }
+        .tint(settings.soberColor)
+        .toolbarBackground(Color("appBackground"), for: .tabBar)
+        .toolbarBackground(.visible, for: .tabBar)
     }
 }
 
