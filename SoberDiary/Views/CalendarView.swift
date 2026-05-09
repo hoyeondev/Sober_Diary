@@ -22,6 +22,18 @@ struct CalendarView: View {
         }
         .padding(.horizontal, 16)
         .background(Color("appBackground"))
+        .gesture(
+            DragGesture(minimumDistance: 40, coordinateSpace: .local)
+                .onEnded { value in
+                    let horizontal = value.translation.width
+                    let vertical = abs(value.translation.height)
+                    guard abs(horizontal) > vertical else { return }
+                    withAnimation(.easeInOut) {
+                        if horizontal < 0 { viewModel.nextMonth() }
+                        else { viewModel.previousMonth() }
+                    }
+                }
+        )
         .onAppear { viewModel.loadRecords(context: modelContext) }
         .onChange(of: allRecords) { _, _ in
             viewModel.loadRecords(context: modelContext)
