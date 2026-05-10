@@ -11,6 +11,7 @@
 		5EFF089C2FA88189006FE828 /* MonthlySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFF089B2FA88189006FE828 /* MonthlySummaryView.swift */; };
 		5EFF089E2FAF708E006FE828 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFF089D2FAF708E006FE828 /* AppSettings.swift */; };
 		5EFF08A02FAF70A3006FE828 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFF089F2FAF70A3006FE828 /* SettingsView.swift */; };
+		5EFF08A22FB01542006FE828 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFF08A12FB01542006FE828 /* NotificationManager.swift */; };
 		A1B2C3D4E5F6A1B2C3D40101 /* SoberDiaryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A1B2C3D40001 /* SoberDiaryApp.swift */; };
 		A1B2C3D4E5F6A1B2C3D40102 /* DrinkRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A1B2C3D40002 /* DrinkRecord.swift */; };
 		A1B2C3D4E5F6A1B2C3D40103 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A1B2C3D40003 /* CalendarViewModel.swift */; };
@@ -28,6 +29,7 @@
 		5EFF089B2FA88189006FE828 /* MonthlySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlySummaryView.swift; sourceTree = "<group>"; };
 		5EFF089D2FAF708E006FE828 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		5EFF089F2FAF70A3006FE828 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		5EFF08A12FB01542006FE828 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F6A1B2C3D40001 /* SoberDiaryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoberDiaryApp.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F6A1B2C3D40002 /* DrinkRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkRecord.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F6A1B2C3D40003 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 			children = (
 				A1B2C3D4E5F6A1B2C3D40002 /* DrinkRecord.swift */,
 				5EFF089D2FAF708E006FE828 /* AppSettings.swift */,
+				5EFF08A12FB01542006FE828 /* NotificationManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -214,6 +217,7 @@
 				A1B2C3D4E5F6A1B2C3D40104 /* ContentView.swift in Sources */,
 				A1B2C3D4E5F6A1B2C3D40105 /* CalendarView.swift in Sources */,
 				5EFF089C2FA88189006FE828 /* MonthlySummaryView.swift in Sources */,
+				5EFF08A22FB01542006FE828 /* NotificationManager.swift in Sources */,
 				A1B2C3D4E5F6A1B2C3D40106 /* DayDetailView.swift in Sources */,
 				5EFF089E2FAF708E006FE828 /* AppSettings.swift in Sources */,
 				A1B2C3D4E5F6A1B2C3D40107 /* DayCell.swift in Sources */,

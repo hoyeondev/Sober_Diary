@@ -4,15 +4,21 @@ import SwiftUI
 final class AppSettings {
     var drinkColor: Color
     var soberColor: Color
+    var isNotificationEnabled: Bool
 
     init() {
         drinkColor = Self.loadColor(key: "drinkColor") ?? Color("drinkPink")
         soberColor = Self.loadColor(key: "soberColor") ?? Color("soberBlue")
+        isNotificationEnabled = UserDefaults.standard.bool(forKey: "isNotificationEnabled")
     }
 
     func save() {
         Self.saveColor(drinkColor, key: "drinkColor")
         Self.saveColor(soberColor, key: "soberColor")
+    }
+
+    func saveNotificationEnabled() {
+        UserDefaults.standard.set(isNotificationEnabled, forKey: "isNotificationEnabled")
     }
 
     func resetToDefaults() {

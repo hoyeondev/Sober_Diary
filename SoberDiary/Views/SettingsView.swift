@@ -45,12 +45,45 @@ struct SettingsView: View {
             }
 
             Section {
+                Toggle(isOn: $settings.isNotificationEnabled) {
+                    Label("매일 알림", systemImage: "bell.fill")
+                }
+                .onChange(of: settings.isNotificationEnabled) { _, enabled in
+                    settings.saveNotificationEnabled()
+                    if enabled {
+                        Task {
+                            let granted = await NotificationManager.shared.requestPermission()
+                            if granted {
+                                NotificationManager.shared.schedule()
+                            } else {
+                                settings.isNotificationEnabled = false
+                                settings.saveNotificationEnabled()
+                            }
+                        }
+                    } else {
+                        NotificationManager.shared.cancel()
+                    }
+                }
+                if settings.isNotificationEnabled {
+                    HStack {
+                        Image(systemName: "clock")
+                            .foregroundStyle(.secondary)
+                        Text("매일 오후 3시에 알림이 발송됩니다.")
+                            .font(.system(size: 13))
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            } header: {
+                Text("알림")
+            }
+
+            Section {
                 Button(role: .destructive) {
                     settings.resetToDefaults()
                 } label: {
                     HStack {
                         Spacer()
-                        Text("기본값으로 초기화")
+                        Text("색상 기본값으로 초기화")
                         Spacer()
                     }
                 }

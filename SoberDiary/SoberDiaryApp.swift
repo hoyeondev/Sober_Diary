@@ -9,6 +9,14 @@ struct SoberDiaryApp: App {
         WindowGroup {
             ContentView()
                 .environment(settings)
+                .task {
+                    if settings.isNotificationEnabled {
+                        let granted = await NotificationManager.shared.requestPermission()
+                        if granted {
+                            NotificationManager.shared.schedule()
+                        }
+                    }
+                }
         }
         .modelContainer(for: DrinkRecord.self)
     }
