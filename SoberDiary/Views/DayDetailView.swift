@@ -15,6 +15,7 @@ struct DayDetailView: View {
     @State private var memo: String = ""
     @State private var showDeleteConfirm: Bool = false
     @State private var isLoaded: Bool = false
+    @State private var memoFocusCount: Int = 0
 
     private var existingRecord: DrinkRecord? {
         let day = Calendar.current.startOfDay(for: date)
@@ -30,17 +31,28 @@ struct DayDetailView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    dateHeader
-                    drinkToggleSection
-                    if didDrink {
-                        drinkTypeSection
-                        customTypeField
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        dateHeader
+                        drinkToggleSection
+                        if didDrink {
+                            drinkTypeSection
+                            customTypeField
+                        }
+                        memoSection
+                            .id("memo")
                     }
-                    memoSection
+                    .padding(16)
                 }
-                .padding(16)
+                .scrollDismissesKeyboard(.interactively)
+                .onChange(of: memoFocusCount) { _, _ in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        withAnimation(.easeInOut) {
+                            proxy.scrollTo("memo", anchor: .bottom)
+                        }
+                    }
+                }
             }
             .background(Color("appBackground"))
             .safeAreaInset(edge: .bottom) {
@@ -165,7 +177,7 @@ struct DayDetailView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("메모")
                 .font(.system(size: 15, weight: .semibold))
-            MemoTextEditor(text: $memo)
+            MemoTextEditor(text: $memo, onFocus: { memoFocusCount += 1 })
                 .frame(minHeight: 120)
                 .background(
                     RoundedRectangle(cornerRadius: 12)
@@ -238,6 +250,7 @@ struct DayDetailView: View {
 
 private struct MemoTextEditor: UIViewRepresentable {
     @Binding var text: String
+    var onFocus: (() -> Void)? = nil
 
     func makeCoordinator() -> Coordinator { Coordinator(self) }
 
@@ -258,6 +271,10 @@ private struct MemoTextEditor: UIViewRepresentable {
     class Coordinator: NSObject, UITextViewDelegate {
         var parent: MemoTextEditor
         init(_ parent: MemoTextEditor) { self.parent = parent }
+
+        func textViewDidBeginEditing(_ textView: UITextView) {
+            parent.onFocus?()
+        }
 
         func textViewDidChange(_ textView: UITextView) {
             parent.text = textView.text
