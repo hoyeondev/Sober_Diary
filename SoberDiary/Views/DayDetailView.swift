@@ -10,6 +10,7 @@ struct DayDetailView: View {
     @Query private var allRecords: [DrinkRecord]
 
     @State private var didDrink: Bool = false
+    @State private var drinkAmount: String = ""
     @State private var selectedTypes: Set<String> = []
     @State private var customType: String = ""
     @State private var memo: String = ""
@@ -37,6 +38,7 @@ struct DayDetailView: View {
                         dateHeader
                         drinkToggleSection
                         if didDrink {
+                            drinkAmountSection
                             drinkTypeSection
                             customTypeField
                         }
@@ -119,6 +121,37 @@ struct DayDetailView: View {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(Color(.secondarySystemBackground))
             )
+        }
+    }
+
+    private var drinkAmountSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("음주량")
+                .font(.system(size: 15, weight: .semibold))
+            HStack(spacing: 8) {
+                ForEach(DrinkAmount.allCases, id: \.self) { level in
+                    Button {
+                        drinkAmount = drinkAmount == level.rawValue ? "" : level.rawValue
+                    } label: {
+                        VStack(spacing: 4) {
+                            Text(level.icon)
+                                .font(.system(size: 22))
+                            Text(level.rawValue)
+                                .font(.system(size: 13, weight: drinkAmount == level.rawValue ? .semibold : .regular))
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(drinkAmount == level.rawValue
+                                      ? settings.drinkColor
+                                      : Color(.secondarySystemBackground))
+                        )
+                        .foregroundStyle(drinkAmount == level.rawValue ? .white : .primary)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
         }
     }
 
@@ -216,6 +249,7 @@ struct DayDetailView: View {
     private func loadIfNeeded() {
         guard !isLoaded, let record = existingRecord else { return }
         didDrink = record.didDrink
+        drinkAmount = record.drinkAmount
         selectedTypes = Set(record.drinkTypes)
         memo = record.memo
         isLoaded = true
@@ -224,15 +258,18 @@ struct DayDetailView: View {
     private func save() {
         let day = Calendar.current.startOfDay(for: date)
         let typesToSave = didDrink ? Array(selectedTypes).sorted() : []
+        let amountToSave = didDrink ? drinkAmount : ""
 
         if let record = existingRecord {
             record.didDrink = didDrink
+            record.drinkAmount = amountToSave
             record.drinkTypes = typesToSave
             record.memo = memo
         } else {
             let new = DrinkRecord(date: day,
                                   didDrink: didDrink,
                                   drinkTypes: typesToSave,
+                                  drinkAmount: amountToSave,
                                   memo: memo)
             modelContext.insert(new)
         }

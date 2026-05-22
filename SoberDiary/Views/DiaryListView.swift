@@ -83,6 +83,11 @@ private struct DiaryRowView: View {
                     .padding(.vertical, 4)
                     .background(Capsule().fill(record.didDrink ? settings.drinkColor.opacity(0.15) : settings.soberColor.opacity(0.15)))
             }
+            if record.didDrink && !record.drinkAmount.isEmpty {
+                Text(record.drinkAmount)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(settings.drinkColor)
+            }
             if !record.drinkTypes.isEmpty {
                 Text(record.drinkTypes.joined(separator: " · "))
                     .font(.system(size: 12))
