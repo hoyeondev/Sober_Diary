@@ -134,7 +134,7 @@ struct DayDetailView: View {
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundStyle(settings.drinkColor)
             }
-            Slider(value: $drinkLevel, in: 0...1)
+            Slider(value: $drinkLevel, in: 0...1, step: 0.1)
                 .tint(settings.drinkColor)
             HStack {
                 Text("조금")
