@@ -10,35 +10,21 @@ final class DrinkRecord {
     var date: Date
     var didDrink: Bool
     var drinkTypes: [String]
-    var drinkAmount: String
+    var drinkLevel: Double
     var memo: String
     var createdAt: Date
 
     init(date: Date,
          didDrink: Bool = false,
          drinkTypes: [String] = [],
-         drinkAmount: String = "",
+         drinkLevel: Double = 0.5,
          memo: String = "") {
         self.date = Calendar.current.startOfDay(for: date)
         self.didDrink = didDrink
         self.drinkTypes = drinkTypes
-        self.drinkAmount = drinkAmount
+        self.drinkLevel = drinkLevel
         self.memo = memo
         self.createdAt = Date()
-    }
-}
-
-enum DrinkAmount: String, CaseIterable {
-    case light = "조금"
-    case moderate = "적당히"
-    case heavy = "많이"
-
-    var icon: String {
-        switch self {
-        case .light:    return "🥃"
-        case .moderate: return "🍺"
-        case .heavy:    return "🍻"
-        }
     }
 }
 

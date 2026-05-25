@@ -83,8 +83,8 @@ private struct DiaryRowView: View {
                     .padding(.vertical, 4)
                     .background(Capsule().fill(record.didDrink ? settings.drinkColor.opacity(0.15) : settings.soberColor.opacity(0.15)))
             }
-            if record.didDrink && !record.drinkAmount.isEmpty {
-                Text(record.drinkAmount)
+            if record.didDrink {
+                Text("음주량 \(Int(record.drinkLevel * 100))%")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundStyle(settings.drinkColor)
             }
