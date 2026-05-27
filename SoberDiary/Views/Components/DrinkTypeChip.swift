@@ -5,6 +5,8 @@ struct DrinkTypeChip: View {
     let isSelected: Bool
     let action: () -> Void
 
+    @Environment(AppSettings.self) private var settings
+
     var body: some View {
         Button(action: action) {
             Text(label)
@@ -12,7 +14,7 @@ struct DrinkTypeChip: View {
                 .padding(.horizontal, 14)
                 .padding(.vertical, 8)
                 .background(
-                    Capsule().fill(isSelected ? Color("drinkPink") : Color(.tertiarySystemBackground))
+                    Capsule().fill(isSelected ? settings.drinkColor : Color(.tertiarySystemBackground))
                 )
                 .foregroundStyle(isSelected ? .white : .primary)
                 .overlay(

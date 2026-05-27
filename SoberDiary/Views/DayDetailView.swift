@@ -91,6 +91,7 @@ struct DayDetailView: View {
                 Button("삭제", role: .destructive, action: deleteRecord)
                 Button("취소", role: .cancel) {}
             }
+            .tint(didDrink ? settings.drinkColor : settings.soberColor)
         }
     }
 
@@ -209,7 +210,7 @@ struct DayDetailView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("메모")
                 .font(.system(size: 15, weight: .semibold))
-            MemoTextEditor(text: $memo, onFocus: { memoFocusCount += 1 })
+            MemoTextEditor(text: $memo, tintColor: didDrink ? settings.drinkColor : settings.soberColor, onFocus: { memoFocusCount += 1 })
                 .frame(minHeight: 120)
                 .background(
                     RoundedRectangle(cornerRadius: 12)
@@ -285,6 +286,7 @@ struct DayDetailView: View {
 
 private struct MemoTextEditor: UIViewRepresentable {
     @Binding var text: String
+    var tintColor: Color = .accentColor
     var onFocus: (() -> Void)? = nil
 
     func makeCoordinator() -> Coordinator { Coordinator(self) }
@@ -301,6 +303,7 @@ private struct MemoTextEditor: UIViewRepresentable {
 
     func updateUIView(_ uiView: UITextView, context: Context) {
         if uiView.text != text { uiView.text = text }
+        uiView.tintColor = UIColor(tintColor)
     }
 
     class Coordinator: NSObject, UITextViewDelegate {
