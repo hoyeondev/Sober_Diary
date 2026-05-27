@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5EFA34C32FC5E0BD00C4CAEE /* DrinkRecordMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA34C22FC5E0BD00C4CAEE /* DrinkRecordMigration.swift */; };
 		5EFF089A2FA8817A006FE828 /* DiaryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFF08992FA8817A006FE828 /* DiaryListView.swift */; };
 		5EFF089C2FA88189006FE828 /* MonthlySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFF089B2FA88189006FE828 /* MonthlySummaryView.swift */; };
 		5EFF089E2FAF708E006FE828 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFF089D2FAF708E006FE828 /* AppSettings.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5EFA34C22FC5E0BD00C4CAEE /* DrinkRecordMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkRecordMigration.swift; sourceTree = "<group>"; };
 		5EFF08992FA8817A006FE828 /* DiaryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListView.swift; sourceTree = "<group>"; };
 		5EFF089B2FA88189006FE828 /* MonthlySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlySummaryView.swift; sourceTree = "<group>"; };
 		5EFF089D2FAF708E006FE828 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				A1B2C3D4E5F6A1B2C3D40002 /* DrinkRecord.swift */,
 				5EFF089D2FAF708E006FE828 /* AppSettings.swift */,
 				5EFF08A12FB01542006FE828 /* NotificationManager.swift */,
+				5EFA34C22FC5E0BD00C4CAEE /* DrinkRecordMigration.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5EFA34C32FC5E0BD00C4CAEE /* DrinkRecordMigration.swift in Sources */,
 				A1B2C3D4E5F6A1B2C3D40102 /* DrinkRecord.swift in Sources */,
 				5EFF089A2FA8817A006FE828 /* DiaryListView.swift in Sources */,
 				A1B2C3D4E5F6A1B2C3D40103 /* CalendarViewModel.swift in Sources */,
@@ -370,7 +374,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hoyeon.SoberDiary;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -400,7 +404,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hoyeon.SoberDiary;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

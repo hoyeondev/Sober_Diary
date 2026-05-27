@@ -5,28 +5,7 @@ extension Date: @retroactive Identifiable {
     public var id: TimeInterval { timeIntervalSince1970 }
 }
 
-@Model
-final class DrinkRecord {
-    var date: Date
-    var didDrink: Bool
-    var drinkTypes: [String]
-    var drinkLevel: Double
-    var memo: String
-    var createdAt: Date
-
-    init(date: Date,
-         didDrink: Bool = false,
-         drinkTypes: [String] = [],
-         drinkLevel: Double = 0.5,
-         memo: String = "") {
-        self.date = Calendar.current.startOfDay(for: date)
-        self.didDrink = didDrink
-        self.drinkTypes = drinkTypes
-        self.drinkLevel = drinkLevel
-        self.memo = memo
-        self.createdAt = Date()
-    }
-}
+typealias DrinkRecord = SchemaV3.DrinkRecord
 
 enum PresetDrinkType {
     static let all: [String] = [
