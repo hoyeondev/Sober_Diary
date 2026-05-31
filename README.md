@@ -2,7 +2,7 @@
 
 
 
-> 금주 습관 기록 관리 앱
+> 금주 습관 기록 관리 앱 : [App Store](https://apps.apple.com/us/app/%EA%B8%88%EC%A3%BC%EC%9D%BC%EA%B8%B0/id6766429440)
 <br>
 
 <p align="center">
